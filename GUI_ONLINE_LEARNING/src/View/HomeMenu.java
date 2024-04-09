@@ -293,7 +293,7 @@ public class HomeMenu extends JFrame {
 
         JPanel panel_AppLogo = new JPanel();
         FlowLayout flowLayout = (FlowLayout) panel_AppLogo.getLayout();
-        flowLayout.setVgap(0);
+        flowLayout.setVgap(20);
         panel_AppLogo.setBackground(new Color(255, 255, 255));
         panel_AppLogo.setBackground(new Color(128,128,255));
         panel_AppLogo.setBounds(0, 0, 250, 110);
@@ -306,17 +306,15 @@ public class HomeMenu extends JFrame {
 
         Dimension menuSize = panel_Left.getPreferredSize();
 
-        btnHome = new MenuItem();
-        btnHome.setText("Home");
+        btnHome = new MenuItem("Home");
         btnHome.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnHome.setForeground(new Color(255, 255, 255));
+//        btnHome.setForeground(new Color(255, 255, 255));
         btnHome.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
-        btnHome.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/home_16.png")));
+//        btnHome.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/home_16.png")));
         btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel_Menu.add(btnHome);
 
-        btnCourses = new MenuItem();
-        btnCourses.setText("Courses");
+        btnCourses = new MenuItem("Courses");
         btnCourses.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnCourses.setForeground(new Color(255, 255, 255));
         btnCourses.setBackground(new Color(128,128,255));
@@ -325,8 +323,7 @@ public class HomeMenu extends JFrame {
         btnCourses.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel_Menu.add(btnCourses);
 
-        btnProfile = new MenuItem();
-        btnProfile.setText("Profile");
+        btnProfile = new MenuItem("Profile");
         btnProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnProfile.setForeground(new Color(255, 255, 255));
         btnProfile.setBackground(new Color(128,128,255));
@@ -335,8 +332,7 @@ public class HomeMenu extends JFrame {
         btnProfile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel_Menu.add(btnProfile);
 
-        btnSetting = new MenuItem();
-        btnSetting.setText("Setting");
+        btnSetting = new MenuItem("Setting");
         btnSetting.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnSetting.setForeground(new Color(255, 255, 255));
         btnSetting.setBackground(new Color(128,128,255));
@@ -345,8 +341,7 @@ public class HomeMenu extends JFrame {
         btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel_Menu.add(btnSetting);
 
-        btnLogout = new MenuItem();
-        btnLogout.setText("Log out");
+        btnLogout = new MenuItem("Log out");
         btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnLogout.setForeground(new Color(255, 255, 255));
         btnLogout.setBackground(new Color(128,128,255));
