@@ -1,4 +1,4 @@
-package MenuBar;
+package MyComponent;
 
 import java.awt.*;
 import javax.swing.*;

@@ -42,7 +42,7 @@ public class MyButton extends JButton {
             }
             @Override
             public void mousePressed(MouseEvent e) {
-                setBackground(new Color(129,103,212));
+                setBackground(new Color(244,244,244));
                 repaint();
                 super.mousePressed(e);
             }

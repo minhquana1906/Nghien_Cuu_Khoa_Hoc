@@ -29,8 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.TableActionEvent;
 
-import MenuBar.CircularImageIcon;
-import javax.swing.JSeparator;
+import MyComponent.CircularImageIcon;
 
 public class HomeMenu extends JFrame {
 
@@ -296,12 +295,12 @@ public class HomeMenu extends JFrame {
         flowLayout.setVgap(20);
         panel_AppLogo.setBackground(new Color(255, 255, 255));
         panel_AppLogo.setBackground(new Color(128,128,255));
-        panel_AppLogo.setBounds(0, 0, 250, 110);
+        panel_AppLogo.setBounds(0, 0, 250, 150);
         panel_Left.add(panel_AppLogo);
 
         JPanel panel_Menu = new JPanel();
         panel_Menu.setBackground(new Color(128, 128, 255));
-        panel_Menu.setBounds(0, 136, 250, 508);
+        panel_Menu.setBounds(0, 194, 250, 450);
         panel_Left.add(panel_Menu);
 
         Dimension menuSize = panel_Left.getPreferredSize();
@@ -351,18 +350,13 @@ public class HomeMenu extends JFrame {
         panel_Menu.add(btnLogout);
 
         JLabel ProfileImg = new JLabel();   //TODO: get username from database
-        ProfileImg.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        ProfileImg.setForeground(new Color(255, 255, 255));
+        ProfileImg.setFont(new Font("Tahoma", Font.PLAIN, 18));
         ProfileImg.setText("User's name");
         ProfileImg.setHorizontalTextPosition(SwingConstants.CENTER);
         ProfileImg.setVerticalTextPosition(SwingConstants.BOTTOM);
-        ImageIcon imageIcon = new ImageIcon(HomeMenu.class.getResource("/Icon/Profile/NguyenMinhQuan_222631132.png")); // replace with your own image path
-        Image image = imageIcon.getImage(); // transform it
-        Image newimg = image.getScaledInstance((int)(panel_AppLogo.getHeight() * 0.8), (int)(panel_AppLogo.getHeight() * 0.8),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        imageIcon = new CircularImageIcon(newimg);  // transform it back
-        ProfileImg.setIcon(imageIcon);
-        panel_AppLogo.add(ProfileImg);
-        panel_AppLogo.revalidate();
-        panel_AppLogo.repaint();
+
+        setCircularProfileImage(panel_AppLogo, ProfileImg, "/Icon/Profile/NguyenMinhQuan_222631132.png");
 
         btnRollCall.addMouseListener(new MouseAdapter() {
             @Override
@@ -373,6 +367,16 @@ public class HomeMenu extends JFrame {
         });
     }
 
+    public void setCircularProfileImage(JPanel panel, JLabel label, String imagePath) {
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource(imagePath));
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance((int)(panel.getHeight() * 0.6), (int)(panel.getHeight() * 0.6),  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new CircularImageIcon(newimg);
+        label.setIcon(imageIcon);
+        panel.add(label);
+        panel.revalidate();
+        panel.repaint();
+    }
 
     private static ImageIcon getImageIcon(String filename) {
         try {
