@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import Controller.TableActionEvent;
 
 import MyComponent.CircularImageIcon;
+import javax.swing.JSeparator;
 
 public class HomeMenu extends JFrame {
 
@@ -307,6 +308,7 @@ public class HomeMenu extends JFrame {
 
         btnHome = new MenuItem("Home");
         btnHome.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        btnHome.setIconTextGap(15);
 //        btnHome.setForeground(new Color(255, 255, 255));
         btnHome.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
 //        btnHome.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/home_16.png")));
@@ -317,6 +319,7 @@ public class HomeMenu extends JFrame {
         btnCourses.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnCourses.setForeground(new Color(255, 255, 255));
         btnCourses.setBackground(new Color(128,128,255));
+        btnCourses.setIconTextGap(15);
         btnCourses.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/courses.png")));
         btnCourses.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
         btnCourses.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -326,6 +329,7 @@ public class HomeMenu extends JFrame {
         btnProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnProfile.setForeground(new Color(255, 255, 255));
         btnProfile.setBackground(new Color(128,128,255));
+        btnProfile.setIconTextGap(15);
         btnProfile.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/profile.png")));
         btnProfile.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
         btnProfile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -335,6 +339,7 @@ public class HomeMenu extends JFrame {
         btnSetting.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnSetting.setForeground(new Color(255, 255, 255));
         btnSetting.setBackground(new Color(128,128,255));
+        btnSetting.setIconTextGap(15);
         btnSetting.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Function/settings.png")));
         btnSetting.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
         btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -344,6 +349,7 @@ public class HomeMenu extends JFrame {
         btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnLogout.setForeground(new Color(255, 255, 255));
         btnLogout.setBackground(new Color(128,128,255));
+        btnLogout.setIconTextGap(15);
         btnLogout.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Logo/logout.png")));
         btnLogout.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
         btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -355,8 +361,14 @@ public class HomeMenu extends JFrame {
         ProfileImg.setText("User's name");
         ProfileImg.setHorizontalTextPosition(SwingConstants.CENTER);
         ProfileImg.setVerticalTextPosition(SwingConstants.BOTTOM);
-
-        setCircularProfileImage(panel_AppLogo, ProfileImg, "/Icon/Profile/NguyenMinhQuan_222631132.png");
+        ImageIcon imageIcon = new ImageIcon(HomeMenu.class.getResource("/Icon/Profile/NguyenMinhQuan_222631132.png"));
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance((int)(panel_AppLogo.getHeight() * 0.6), (int)(panel_AppLogo.getHeight() * 0.6),  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new CircularImageIcon(newimg);
+        ProfileImg.setIcon(imageIcon);
+        panel_AppLogo.add(ProfileImg);
+        panel_AppLogo.revalidate();
+        panel_AppLogo.repaint();
 
         btnRollCall.addMouseListener(new MouseAdapter() {
             @Override
@@ -367,16 +379,6 @@ public class HomeMenu extends JFrame {
         });
     }
 
-    public void setCircularProfileImage(JPanel panel, JLabel label, String imagePath) {
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource(imagePath));
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance((int)(panel.getHeight() * 0.6), (int)(panel.getHeight() * 0.6),  java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new CircularImageIcon(newimg);
-        label.setIcon(imageIcon);
-        panel.add(label);
-        panel.revalidate();
-        panel.repaint();
-    }
 
     private static ImageIcon getImageIcon(String filename) {
         try {
