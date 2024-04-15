@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Database {
     private static String driver = "com.mysql.cj.jdbc.Driver";
-    private static String url = "jdbc:mysql://localhost:3306/login";
+    private static String url = "jdbc:mysql://localhost:3306/onlinelearningdb";
     private static String username = "root";
     private static String password = "minhquan2004";
     public static Connection mycon() {
