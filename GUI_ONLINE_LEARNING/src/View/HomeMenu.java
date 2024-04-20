@@ -354,6 +354,18 @@ public class HomeMenu extends JFrame {
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
         panel_DataTable.add(new JScrollPane(table), BorderLayout.CENTER);
 
+
+        btnLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int choice = JOptionPane.showConfirmDialog(null, "Do you want to log out?", "Log out", JOptionPane.YES_NO_OPTION);
+                if(choice == 0){
+                    dispose();
+                    SignInForm signIn = new SignInForm();
+                    signIn.setVisible(true);
+                }
+            }
+        });
         btnRollCall.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

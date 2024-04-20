@@ -1,5 +1,8 @@
 package View;
 
+import Controller.SignUpController;
+import MyInterface.Paths;
+
 import java.awt.EventQueue;
 
 import javax.swing.*;
@@ -21,7 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.awt.Toolkit;
 
-public class SignUpForm extends JFrame {
+public class SignUpForm extends JFrame implements Paths {
     private Dimension FRAME_SIZE;
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -41,7 +44,7 @@ public class SignUpForm extends JFrame {
     private JLabel lbl_Class;
     private JLabel lbl_Password;
     private JLabel lbl_PasswordConfirm;
-    private JTextField textField_Password;
+    private JTextField textField_Class;
     private JPasswordField passwordField_Password;
     private JPasswordField passwordField_PasswordConfirm;
     private JPanel panel_UsernameContainer;
@@ -61,12 +64,31 @@ public class SignUpForm extends JFrame {
     private JLabel lbl_LoginHere;
     private JPanel panel_FooterPadding;
     private JPanel panel_ButtonSignUp;
-    public JButton btnSignup;
+    private JButton btnSignup;
 
+    private SignUpController signUpController;
+    
+    //getters
+    public JTextField getTextField_Username() {
+        return textField_Username;
+    }
 
-    /**
-     * Launch the application.
-     */
+    public JTextField getTextField_Id() {
+        return textField_Id;
+    }
+
+    public JTextField getTextField_Class() {
+        return textField_Class;
+    }
+
+    public JPasswordField getPasswordField_Password() {
+        return passwordField_Password;
+    }
+
+    public JPasswordField getPasswordField_PasswordConfirm() {
+        return passwordField_PasswordConfirm;
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -79,12 +101,8 @@ public class SignUpForm extends JFrame {
             }
         });
     }
-
-    /**
-     * Create the frame.
-     */
     public SignUpForm() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(SignUpForm.class.getResource("/Icon/Logo/signup.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(SignUpForm.class.getResource(SIGN_UP_ICON)));
         setTitle("Sign Up");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 530, 680);
@@ -92,13 +110,17 @@ public class SignUpForm extends JFrame {
         setResizable(false);
         //get size of frame
         FRAME_SIZE = this.getSize();
+        
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0,0,0,0));
-
         setContentPane(contentPane);
 
         this.init();
 
+        //dang ky su kien
+        signUpController = new SignUpController(this);
+        btnSignup.addActionListener(signUpController);
+        lbl_LoginHere.addMouseListener(signUpController);
     }
 
     void init() {
@@ -107,8 +129,6 @@ public class SignUpForm extends JFrame {
         panel_Left.setPreferredSize(new Dimension((int)(FRAME_SIZE.getWidth()), (int)(FRAME_SIZE.getHeight() * 0.1)));
         contentPane.add(panel_Left);
         panel_Left.setLayout(new BorderLayout(0, 0));
-
-//		System.out.println(FRAME_SIZE);
 
         panel_Left_Header = new JPanel();
         panel_Left_Header.setBackground(new Color(255, 255, 255));
@@ -125,7 +145,7 @@ public class SignUpForm extends JFrame {
         panel_Left_Header.add(panel_Logo);
 
         lbl_Logo = new JLabel("App's name");
-        lbl_Logo.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Logo/eye.png")));
+        lbl_Logo.setIcon(new ImageIcon(SignUpForm.class.getResource(SIGN_UP_LOGO)));
         lbl_Logo.setFont(new Font("Tahoma", Font.PLAIN, 20));
         panel_Logo.add(lbl_Logo);
 
@@ -161,7 +181,7 @@ public class SignUpForm extends JFrame {
         panel_UsernameContainer.setLayout(new BoxLayout(panel_UsernameContainer, BoxLayout.X_AXIS));
 
         lbl_UserIcon = new JLabel("");
-        lbl_UserIcon.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Login_SignUp/profile.png")));
+        lbl_UserIcon.setIcon(new ImageIcon(SignUpForm.class.getResource(USER_ICON)));
         panel_UsernameContainer.add(lbl_UserIcon);
 
         textField_Username = new JTextField();
@@ -186,7 +206,7 @@ public class SignUpForm extends JFrame {
         panel_IdContainer.setLayout(new BoxLayout(panel_IdContainer, BoxLayout.X_AXIS));
 
         lbl_IdIcon = new JLabel("");
-        lbl_IdIcon.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Login_SignUp/id.png")));
+        lbl_IdIcon.setIcon(new ImageIcon(SignUpForm.class.getResource(ID_ICON)));
         panel_IdContainer.add(lbl_IdIcon);
 
         textField_Id = new JTextField();
@@ -210,13 +230,13 @@ public class SignUpForm extends JFrame {
         panel_ClassContainer.setLayout(new BoxLayout(panel_ClassContainer, BoxLayout.X_AXIS));
 
         lblClassIcon = new JLabel("\r\n");
-        lblClassIcon.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Login_SignUp/class.png")));
+        lblClassIcon.setIcon(new ImageIcon(SignUpForm.class.getResource(CLASS_ICON)));
         panel_ClassContainer.add(lblClassIcon);
 
-        textField_Password = new JTextField();
-        textField_Password.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        panel_ClassContainer.add(textField_Password);
-        textField_Password.setColumns(10);
+        textField_Class = new JTextField();
+        textField_Class.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        panel_ClassContainer.add(textField_Class);
+        textField_Class.setColumns(10);
 
         JPanel panel_Password = new JPanel();
         panel_Password.setBackground(new Color(255, 255, 255));
@@ -234,7 +254,7 @@ public class SignUpForm extends JFrame {
         panel_PasswordContainer.setLayout(new BoxLayout(panel_PasswordContainer, BoxLayout.X_AXIS));
 
         lbl_PasswordIcon = new JLabel("\r\n");
-        lbl_PasswordIcon.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Login_SignUp/password.png")));
+        lbl_PasswordIcon.setIcon(new ImageIcon(SignUpForm.class.getResource(PASSWORD_ICON)));
         panel_PasswordContainer.add(lbl_PasswordIcon);
 
         passwordField_Password = new JPasswordField();
@@ -257,7 +277,7 @@ public class SignUpForm extends JFrame {
         panel_PassConfirmContainer.setLayout(new BoxLayout(panel_PassConfirmContainer, BoxLayout.X_AXIS));
 
         lbl_PasswordConfirmIcon = new JLabel("");
-        lbl_PasswordConfirmIcon.setIcon(new ImageIcon(SignUpForm.class.getResource("/Icon/Login_SignUp/password.png")));
+        lbl_PasswordConfirmIcon.setIcon(new ImageIcon(SignUpForm.class.getResource(PASSWORD_ICON)));
         panel_PassConfirmContainer.add(lbl_PasswordConfirmIcon);
 
         passwordField_PasswordConfirm = new JPasswordField();
@@ -318,127 +338,5 @@ public class SignUpForm extends JFrame {
         btnSignup.setFocusable(false);
         btnSignup.setPreferredSize(new Dimension((int)(panel_LeftFooter.getPreferredSize().getWidth()*0.65), (int)(panel_LeftFooter.getPreferredSize().getHeight() * 0.3)));
         panel_ButtonSignUp.add(btnSignup);
-
-        //validate
-
-
-        // Event Handle
-//        btnSignup.addMouseListener(new MouseAdapter() {
-//        	@Override
-//        	public void mousePressed(MouseEvent e) {
-//        		// TODO Auto-generated method stub
-//        		super.mousePressed(e);
-//        		dispose();
-//        		new LoginForm();
-//        	}
-//        });
-
-        btnSignup.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
-                // validate
-                String userName = textField_Username.getText();
-                String id = textField_Id.getText();
-                String className = textField_Password.getText();
-                String password = passwordField_Password.getText();
-                String passwordConfirm = passwordField_PasswordConfirm.getText();
-
-                if(userName.equals("") || id.equals("") || className.equals("") || password.equals("") || passwordConfirm.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if(!password.equals(passwordConfirm)){
-                    JOptionPane.showMessageDialog(null, "Password and Confirm Password do not match", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if(!isValidatePassword(password)){
-                    JOptionPane.showMessageDialog(null, "Password must be at least 8 characters", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                try {
-                    if(isStudentIdExists(id)){
-                        JOptionPane.showMessageDialog(null, "Student ID already exists", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                try {
-                    if(addAccount(userName, id, className, password)){
-                        JOptionPane.showMessageDialog(null, "Sign up successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                        SignInForm signIn = new SignInForm();
-                        signIn.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Sign up failed", "Error", JOptionPane.ERROR_MESSAGE);
-                        lbl_Username.setText("");
-                        lbl_Id.setText("");
-                        lbl_Class.setText("");
-                        lbl_Password.setText("");
-                        lbl_PasswordConfirm.setText("");
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
-        lbl_LoginHere.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                // TODO Auto-generated method stub
-                super.mousePressed(e);
-                dispose();
-                SignInForm signIn =  new SignInForm();
-                signIn.setVisible(true);
-            }
-        });
-    }
-
-    //validate password
-    private boolean isValidatePassword(String password){
-        return password.length() >= 8 && password.length() <= 20;
-    }
-
-    //check if account exists by Id
-    private boolean isStudentIdExists(String id) throws SQLException {
-        Connection con = database.Database.mycon();
-        try{
-            if(con != null){
-                String query = "select * from studentlist where id = ?";
-                PreparedStatement ps = con.prepareStatement(query);
-                ps.setString(1, id);
-                return ps.executeQuery().next();    //neu ton tai thi tra ve true
-            }
-        } finally{
-            if(con != null){
-                con.close();
-            }
-        }
-        return false;   //neu khong ton tai thi tra ve false
-    }
-
-    //insert into db
-    private boolean addAccount(String userName, String id, String className, String password) throws SQLException {
-        Connection con = database.Database.mycon();
-        try{
-            if(con != null){
-                String query = "insert into studentlist values(?,?,?,?)";
-                PreparedStatement ps = con.prepareStatement(query);
-                ps.setString(1, id);
-                ps.setString(2, userName);
-                ps.setString(3, className);
-                ps.setString(4, password);
-                return ps.executeUpdate() > 0;    //neu insert thanh cong tra ve true
-            }
-        } finally {
-            if(con != null){
-                con.close();
-            }
-        }
-        return false;  //neu insert that bai tra ve false
     }
 }
