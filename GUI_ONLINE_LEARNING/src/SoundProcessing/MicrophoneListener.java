@@ -16,6 +16,7 @@ public class MicrophoneListener implements Runnable {
     }
     public void stop(){
         this.running = false;
+        this.processing = false;
     }
 
     @Override

@@ -1,5 +1,7 @@
-package MenuBar;
+package MyComponent;
 
+import MyInterface.MenuItemInterface;
+import MyInterface.Paths;
 import View.HomeMenu;
 
 import java.awt.*;
@@ -9,16 +11,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-public class MenuItem extends JButton {
+public class MenuItem extends JButton implements Paths, MenuItemInterface {
     private boolean hovering ;
     private Color color;
     private Color pressColor;
     private Color hoverColor;
     private Color borderColor;
     private int radius = 40;
-    private boolean isSelected = false;
+    private boolean isSelected ;
     private static MenuItem selectedButton = null;
-    private Color mainColor = new Color(128, 128, 255);
+    private Color mainColor;
 
     public boolean isHovering() {
         return hovering;
@@ -64,24 +66,49 @@ public class MenuItem extends JButton {
         this.isSelected = isSelected;
     }
 
+    public static MenuItem getSelectedButton() {
+        return selectedButton;
+    }
+
+    public static void setSelectedButton(MenuItem selectedButton) {
+        MenuItem.selectedButton = selectedButton;
+    }
+
+    public Color getMainColor() {
+        return mainColor;
+    }
+
+    public void setMainColor(Color mainColor) {
+        this.mainColor = mainColor;
+    }
 
     public MenuItem(String text){
         super(text);
+
+        initComponents();
+    }
+
+    private void initComponents(){
         setContentAreaFilled(false);
         setBorder(null);
         setFocusPainted(false);
+
+        isSelected = false;
+//        selectedButton = null;
+        radius = 40;
         color = Color.white;
+        mainColor = new Color(128, 128, 255);
         pressColor = new Color(224,224,224);
         hoverColor = new Color(240,240,240);
         borderColor = new Color(128,128,255);
         setColor(color);
 
-        if(getText().equals("Home")){
+        if(getText().equals(HOME)){
             isSelected = true;
-            MenuItem.selectedButton = this;
+            selectedButton = this;
             this.setBackground(color);
             this.setForeground(mainColor);
-            this.setColoredIcon(HomeMenu.getHomeIconPath(), mainColor);
+            this.setColoredIcon(homeIconPath, mainColor);
         }
 
         addMouseListener(new MouseListener() {
@@ -92,33 +119,27 @@ public class MenuItem extends JButton {
             public void mousePressed(MouseEvent e) {
 
                 // If there is a previously selected button, deselect it
-                if (MenuItem.selectedButton != null) {
-                    MenuItem.selectedButton.isSelected = false;
-                    MenuItem.selectedButton.setBackground(MenuItem.selectedButton.color);
-                    MenuItem.selectedButton.setForeground(Color.white);
+                if (selectedButton != null) {
+                    selectedButton.isSelected = false;
+                    selectedButton.setBackground(selectedButton.color);
+                    selectedButton.setForeground(Color.white);
 
                     //only change color of icon != log out button
-                    if(MenuItem.selectedButton.getText().equals("Home")){
-                        MenuItem.selectedButton.setColoredIcon(HomeMenu.getHomeIconPath(), Color.white);
+                    if(selectedButton.getText().equals(HOME)){
+                        selectedButton.setColoredIcon(homeIconPath, Color.white);
                     }
-                    else if(MenuItem.selectedButton.getText().equals("Courses")){
-                        MenuItem.selectedButton.setColoredIcon(HomeMenu.getCoursesIconPath(), Color.white);
+                    else if(selectedButton.getText().equals(COURSES)){
+                        selectedButton.setColoredIcon(coursesIconPath, Color.white);
                     }
-                    else if(MenuItem.selectedButton.getText().equals("Profile")){
-                        MenuItem.selectedButton.setColoredIcon(HomeMenu.getProfileIconPath(), Color.white);
+                    else if(selectedButton.getText().equals(PROFILE)){
+                        selectedButton.setColoredIcon(profileIconPath, Color.white);
                     }
-                    else if(MenuItem.selectedButton.getText().equals("Setting")){
-                        MenuItem.selectedButton.setColoredIcon(HomeMenu.getSettingIconPath(), Color.white);
+                    else if(selectedButton.getText().equals(SETTING)){
+                        selectedButton.setColoredIcon(settingIconPath, Color.white);
                     }
-                    else if(MenuItem.selectedButton.getText().equals("Log out")){
-                        setIcon(new ImageIcon(getClass().getResource("/Icon/Logo/logout.png")));
+                    else if(selectedButton.getText().equals(LOGOUT)){
+                        setIcon(new ImageIcon(getClass().getResource(logoutIconPath)));
                     }
-
-
-
-
-
-//                        //TODO can luu lai phan tu dang trc va khong thay doi icon cua nut logout
                 }
 
 
@@ -127,20 +148,20 @@ public class MenuItem extends JButton {
                 setBackground(pressColor);
                 setForeground(mainColor);
 
-                if (getText().equals("Home")) {
-                    setColoredIcon(HomeMenu.getHomeIconPath(), mainColor);
-                } else if (getText().equals("Courses")) {
-                    setColoredIcon(HomeMenu.getCoursesIconPath(), mainColor);
-                } else if (getText().equals("Profile")) {
-                    setColoredIcon(HomeMenu.getProfileIconPath(), mainColor);
-                } else if (getText().equals("Setting")) {
-                    setColoredIcon(HomeMenu.getSettingIconPath(), mainColor);
-                }else if(getText().equals("Log out")){
-                    setIcon(new ImageIcon(getClass().getResource("/Icon/Logo/logout.png")));
+                if (getText().equals(HOME)) {
+                    setColoredIcon(HomeMenu.homeIconPath, mainColor);
+                } else if (getText().equals(COURSES)) {
+                    setColoredIcon(coursesIconPath, mainColor);
+                } else if (getText().equals(PROFILE)) {
+                    setColoredIcon(profileIconPath, mainColor);
+                } else if (getText().equals(SETTING)) {
+                    setColoredIcon(settingIconPath, mainColor);
+                }else if(getText().equals(LOGOUT)){
+                    setIcon(new ImageIcon(getClass().getResource(logoutIconPath)));
                 }
 
                 // Update the selectedButton to the current button
-                MenuItem.selectedButton = MenuItem.this;
+                selectedButton = MenuItem.this;
             }
 
             @Override
@@ -149,7 +170,6 @@ public class MenuItem extends JButton {
                 setBackground(color);
                 hovering = false;
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
@@ -227,3 +247,6 @@ public class MenuItem extends JButton {
         return new ImageIcon(bufferedImage);
     }
 }
+
+
+

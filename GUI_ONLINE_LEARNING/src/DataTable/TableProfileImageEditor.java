@@ -1,6 +1,6 @@
 package DataTable;
 
-import java.awt.Component;
+import java.awt.*;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;

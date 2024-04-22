@@ -11,7 +11,7 @@ public class RollCall {
     }
     public void start() throws IOException {
         // Xây dựng đường dẫn đến thư mục chứa tập lệnh Python
-        String pythonScriptDirectory = "F:\\NCKH\\Supervision-for-Online-Learning\\";
+        String pythonScriptDirectory = "F:\\Nghien_Cuu_Khoa_Hoc\\Supervision-for-Online-Learning\\";
 
         // Xây dựng đường dẫn đến tập lệnh Python
         String pythonScriptPath = pythonScriptDirectory + "Face_attendance_have_anti_spoofing.py";

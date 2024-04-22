@@ -7,22 +7,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import Controller.HomeController;
 import DataTable.TableActionCellEditor;
 import DataTable.TableActionCellRender;
 import DataTable.TableProfileRender;
-import MenuBar.MenuItem;
+import MyComponent.MenuItem;
 
-import javax.imageio.ImageIO;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
@@ -30,25 +24,26 @@ import javax.swing.table.DefaultTableModel;
 import Controller.TableActionEvent;
 
 import MyComponent.CircularImageIcon;
-import javax.swing.JSeparator;
+import MyComponent.MyButton;
+import MyInterface.Paths;
 
-public class HomeMenu extends JFrame {
+public class HomeMenu extends JFrame implements Paths {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    JPanel panel_Center;
-    JPanel panel_Function;
-    GridBagLayout gbl_panel_Function;
+    private JPanel panel_Center;
+    private JPanel panel_Function;
+    private GridBagLayout gbl_panel_Function;
     private MyButton btnJoin;
-    GridBagConstraints constraint_btnJoin;
+    private GridBagConstraints constraint_btnJoin;
     private MyButton btnRollCall;
-    GridBagConstraints constraint_btnRollCall;
-    JLabel lblJoinMeeting;
-    GridBagConstraints gbc_lblJoinMeeting;
-    JLabel lblRollCall;
-    GridBagConstraints gbc_lblRollCall;
-    JPanel panel_DataTable;
-    JLabel label_AttendancesStatus;
+    private GridBagConstraints constraint_btnRollCall;
+    private JLabel lblJoinMeeting;
+    private GridBagConstraints gbc_lblJoinMeeting;
+    private JLabel lblRollCall;
+    private GridBagConstraints gbc_lblRollCall;
+    private JPanel panel_DataTable;
+    private JLabel label_AttendancesStatus;
     private JTable table;
     private JPanel panel_Left;
     private JPanel panel_AppLogo;
@@ -56,35 +51,53 @@ public class HomeMenu extends JFrame {
     private JLabel ProfileImg;
     private Thread RollCallThread;
 
-    private static String homeIconPath = "/Icon/Logo/home_16.png";
-    private static String coursesIconPath = "/Icon/Logo/courses.png";
-    private static String profileIconPath = "/Icon/Logo/profile.png";
-    private static String settingIconPath = "/Icon/Function/settings.png";
-    private static String logoutIconPath = "/Icon/Logo/logout.png";
-    public static String getHomeIconPath() {
-        return homeIconPath;
-    }
-    public static String getCoursesIconPath(){
-        return coursesIconPath;
-    }
-    public static String getProfileIconPath(){
-        return profileIconPath;
-    }
-    public static String getSettingIconPath(){
-        return settingIconPath;
-    }
-    public static String getLogoutIconPath(){
-        return logoutIconPath;
-    }
-    private static MenuItem btnHome;
-    public static MenuItem btnCourses;
-    private static MenuItem btnProfile;
-    private static MenuItem btnSetting;
+    private MenuItem btnHome;
+    public MenuItem btnCourses;
+    private MenuItem btnProfile;
+    private MenuItem btnSetting;
     private MenuItem btnLogout;
 
-    /**
-     * Launch the application.
-     */
+    //getters & setters
+    public MyButton getBtnJoin() {
+        return btnJoin;
+    }
+
+    public MyButton getBtnRollCall() {
+        return btnRollCall;
+    }
+
+    public MenuItem getBtnHome() {
+        return btnHome;
+    }
+
+    public MenuItem getBtnCourses() {
+        return btnCourses;
+    }
+
+    public MenuItem getBtnProfile() {
+        return btnProfile;
+    }
+
+    public MenuItem getBtnSetting() {
+        return btnSetting;
+    }
+
+    public MenuItem getBtnLogout() {
+        return btnLogout;
+    }
+
+
+    public Thread getRollCallThread() {
+        return RollCallThread;
+    }
+
+    public void setRollCallThread(Thread rollCallThread) {
+        RollCallThread = rollCallThread;
+    }
+
+    //controller
+    private HomeController homeController;
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -99,24 +112,31 @@ public class HomeMenu extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public HomeMenu() {
-        init();
-    }
-
-    private void init(){
-        setIconImage(Toolkit.getDefaultToolkit().getImage(HomeMenu.class.getResource("/Icon/Logo/3d-house-red-24.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(HomeMenu.class.getResource(HOME_ICON)));
         setTitle("Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1080, 683);
+        setSize(1080, 680);
+        setLocationRelativeTo(null);
+
         contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
-
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(0, 0));
 
+        init();
+
+        //controller
+        homeController = new HomeController(this);
+        btnJoin.addActionListener(homeController);
+        btnRollCall.addActionListener(homeController);
+        btnCourses.addActionListener(homeController);
+        btnProfile.addActionListener(homeController);
+        btnSetting.addActionListener(homeController);
+        btnLogout.addActionListener(homeController);
+    }
+
+    private void init(){
         panel_Center = new JPanel();
         contentPane.add(panel_Center, BorderLayout.CENTER);
         panel_Center.setLayout(new BorderLayout(0, 0));
@@ -144,7 +164,8 @@ public class HomeMenu extends JFrame {
         panel_Function.setLayout(gbl_panel_Function);
 
         btnJoin = new MyButton();
-        btnJoin.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Function/join64x64.png")));
+        btnJoin.setName("btnJoin");
+        btnJoin.setIcon(new ImageIcon(HomeMenu.class.getResource(HOME_BTN_JOIN)));
         btnJoin.setForeground(new Color(128, 128, 255));
         btnJoin.setPreferredSize(new Dimension(100, 100));
         btnJoin.setFocusable(false);
@@ -157,7 +178,8 @@ public class HomeMenu extends JFrame {
         panel_Function.add(btnJoin, constraint_btnJoin);
 
         btnRollCall = new MyButton();
-        btnRollCall.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Function/roll_call64x64.png")));
+        btnRollCall.setName("btnRollCall");
+        btnRollCall.setIcon(new ImageIcon(HomeMenu.class.getResource(HOME_BTN_ROLLCALL)));
         btnRollCall.setBackground(new Color(128, 128, 255));
         btnRollCall.setForeground(new Color(128, 128, 255));
         btnRollCall.setPreferredSize(new Dimension(100, 100));
@@ -195,7 +217,7 @@ public class HomeMenu extends JFrame {
         panel_Center.add(panel_DataTable, BorderLayout.SOUTH);
         panel_DataTable.setLayout(new BorderLayout(0, 0));
 
-        label_AttendancesStatus = new JLabel("Students List\r\n");
+        label_AttendancesStatus = new JLabel("Students List");
         label_AttendancesStatus.setFont(new Font("Tahoma", Font.PLAIN, 20));
         panel_DataTable.add(label_AttendancesStatus, BorderLayout.NORTH);
 
@@ -213,14 +235,14 @@ public class HomeMenu extends JFrame {
         table.setBorder(null);
         table.setModel(new DefaultTableModel(
                 new Object[][] {
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/TranTienDung_222611080.png")), "Male", "CNTT-VA2", "222611080", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/VuQuangHuy_222631105.png")), "Male", "CNTT-VA1", "222631105", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinh.png")), "Male", "CNTT-VA2", "222631124", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinhQuan_222631132.png")), "Male", "CNTT-VA1", "222631132", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMaiThanh.png")), "Male", "CNTT-VA2", "222631141", null},
+                        {new ImageIcon(getClass().getResource("/Icon/Profile/TranTienDung_222611080.png")), "Trần Tiến Dũng", "222611080", "CNTT VA2", null},
+                        {new ImageIcon(getClass().getResource("/Icon/Profile/VuQuangHuy_222631105.png")), "Vũ Quang Huy", "222631105", "CNTT VA1", null},
+                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinh_222631124.png")), "Nguyễn Minh", "222631124", "CNTT VA2", null},
+                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinhQuan_222631132.png")), "Nguyễn Minh Quân", "222631132", "CNTT VA1", null},
+                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMaiThanh_222631141.png")), "Nguyễn Mai Thanh", "222631141", "CNTT VA2", null},
                 },
                 new String[] {
-                        "Name", "Gender", "Class", "ID", "Action"
+                        "Profile image", "Name", "ID", "Class", "Action"
                 }
         ));
 
@@ -278,7 +300,6 @@ public class HomeMenu extends JFrame {
         btnSetting.setForeground(new Color(255, 255, 255));
         btnSetting.setBackground(new Color(128,128,255));
         btnSetting.setIconTextGap(15);
-//        btnSetting.setIcon(new ImageIcon(HomeMenu.class.getResource("/Icon/Function/settings.png")));
         btnSetting.setIcon(new ImageIcon(HomeMenu.class.getResource(settingIconPath)));
         btnSetting.setPreferredSize(new Dimension((int)(menuSize.getWidth()*0.8), (int)(menuSize.getHeight()*0.5)));
         btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -310,20 +331,6 @@ public class HomeMenu extends JFrame {
         panel_AppLogo.repaint();
 
 
-        //event handler
-        btnJoin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        btnJoin.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //TODO them nhap ma
-                dispose();
-                AppModel model = new AppModel();
-            }
-        });
-
         //event handler for table
         TableActionEvent event = new TableActionEvent() {
 
@@ -353,55 +360,5 @@ public class HomeMenu extends JFrame {
         table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
         panel_DataTable.add(new JScrollPane(table), BorderLayout.CENTER);
-
-
-        btnLogout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int choice = JOptionPane.showConfirmDialog(null, "Do you want to log out?", "Log out", JOptionPane.YES_NO_OPTION);
-                if(choice == 0){
-                    dispose();
-                    SignInForm signIn = new SignInForm();
-                    signIn.setVisible(true);
-                }
-            }
-        });
-        btnRollCall.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                startRollCallThread();
-                super.mousePressed(e);
-            }
-        });
-    }
-
-
-    private static ImageIcon getImageIcon(String filename) {
-        try {
-            File file = new File(filename);
-            Image image = ImageIO.read(file);
-            return new ImageIcon(image.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // Diem danh
-    private void startRollCallThread(){
-        if(RollCallThread == null || !RollCallThread.isAlive()){
-            System.out.println("Starting rollcall thread...");
-            RollCallThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        new PythonConnection.RollCall().start();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            });
-            RollCallThread.start();
-        }
     }
 }
