@@ -301,16 +301,6 @@ public class SignInForm extends JFrame implements Paths {
         lbl_LoginHere.setFont(new Font("Tahoma", Font.BOLD, 16));
         lbl_LoginHere.setAlignmentX(1.0f);
         panel_SignUpOption.add(lbl_LoginHere);
-
-        //validate
-        btnSignIn.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-        });
     }
 
     private boolean checkPassword(String username, String id, String password) throws SQLException {

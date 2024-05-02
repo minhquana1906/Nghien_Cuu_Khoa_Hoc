@@ -2,7 +2,7 @@ package DataTable;
 
 import javax.swing.JPanel;
 
-import MyComponent.MyButton;
+import Model.MyButton;
 
 import java.awt.Dimension;
 

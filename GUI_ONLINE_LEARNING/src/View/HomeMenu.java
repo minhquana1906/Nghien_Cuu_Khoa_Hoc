@@ -12,9 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import Controller.HomeController;
-import DataTable.TableActionCellEditor;
-import DataTable.TableActionCellRender;
-import DataTable.TableProfileRender;
+import Controller.TableController;
+import DataTable.*;
+import Model.Student;
+import Model.StudentTableModel;
 import MyComponent.MenuItem;
 
 import javax.swing.JTable;
@@ -23,8 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.TableActionEvent;
 
-import MyComponent.CircularImageIcon;
-import MyComponent.MyButton;
+import Model.MyButton;
 import MyInterface.Paths;
 
 public class HomeMenu extends JFrame implements Paths {
@@ -43,7 +43,6 @@ public class HomeMenu extends JFrame implements Paths {
     private JLabel lblRollCall;
     private GridBagConstraints gbc_lblRollCall;
     private JPanel panel_DataTable;
-    private JLabel label_AttendancesStatus;
     private JTable table;
     private JPanel panel_Left;
     private JPanel panel_AppLogo;
@@ -56,6 +55,11 @@ public class HomeMenu extends JFrame implements Paths {
     private MenuItem btnProfile;
     private MenuItem btnSetting;
     private MenuItem btnLogout;
+    private StudentTableModel studentTable;
+    //controller
+    private HomeController homeController;
+    private Student user;
+    private String profileImage;
 
     //getters & setters
     public MyButton getBtnJoin() {
@@ -95,9 +99,6 @@ public class HomeMenu extends JFrame implements Paths {
         RollCallThread = rollCallThread;
     }
 
-    //controller
-    private HomeController homeController;
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -127,7 +128,6 @@ public class HomeMenu extends JFrame implements Paths {
         init();
 
         //controller
-        homeController = new HomeController(this);
         btnJoin.addActionListener(homeController);
         btnRollCall.addActionListener(homeController);
         btnCourses.addActionListener(homeController);
@@ -137,6 +137,14 @@ public class HomeMenu extends JFrame implements Paths {
     }
 
     private void init(){
+        homeController = new HomeController(this);
+        user = homeController.getUser();
+
+        profileImage = user.getImagePath();
+        if (profileImage == null || profileImage.isEmpty()) {
+            profileImage = "defaultUser.png";
+        }
+
         panel_Center = new JPanel();
         contentPane.add(panel_Center, BorderLayout.CENTER);
         panel_Center.setLayout(new BorderLayout(0, 0));
@@ -213,39 +221,13 @@ public class HomeMenu extends JFrame implements Paths {
         panel_Function.add(lblRollCall, gbc_lblRollCall);
 
         panel_DataTable = new JPanel();
-        panel_DataTable.setPreferredSize(new Dimension(0, 300));
+        panel_DataTable.setPreferredSize(new Dimension(0, 275));
         panel_Center.add(panel_DataTable, BorderLayout.SOUTH);
         panel_DataTable.setLayout(new BorderLayout(0, 0));
 
-        label_AttendancesStatus = new JLabel("Students List");
-        label_AttendancesStatus.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        panel_DataTable.add(label_AttendancesStatus, BorderLayout.NORTH);
-
-        //set up table
-        table = new JTable();
-        table.setRowSelectionAllowed(false);
-        table.setAutoscrolls(false);
-        table.setFocusable(false);
-        table.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        table.setRequestFocusEnabled(false);
-        table.setShowGrid(false);
-        table.setRowSelectionAllowed(false);
-
-        table.setRowHeight(50);
-        table.setBorder(null);
-        table.setModel(new DefaultTableModel(
-                new Object[][] {
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/TranTienDung_222611080.png")), "Trần Tiến Dũng", "222611080", "CNTT VA2", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/VuQuangHuy_222631105.png")), "Vũ Quang Huy", "222631105", "CNTT VA1", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinh_222631124.png")), "Nguyễn Minh", "222631124", "CNTT VA2", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMinhQuan_222631132.png")), "Nguyễn Minh Quân", "222631132", "CNTT VA1", null},
-                        {new ImageIcon(getClass().getResource("/Icon/Profile/NguyenMaiThanh_222631141.png")), "Nguyễn Mai Thanh", "222631141", "CNTT VA2", null},
-                },
-                new String[] {
-                        "Profile image", "Name", "ID", "Class", "Action"
-                }
-        ));
-
+        TableController tableController = new TableController();
+        studentTable = tableController.getTableModel();
+        panel_DataTable.add(new JScrollPane(studentTable.getTable()), BorderLayout.CENTER);
 
         panel_Left = new JPanel();
         panel_Left.setBackground(new Color(128, 128, 255));
@@ -315,13 +297,14 @@ public class HomeMenu extends JFrame implements Paths {
         btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panel_Menu.add(btnLogout);
 
-        ProfileImg = new JLabel();   //TODO: get username from database
+        ProfileImg = new JLabel();
         ProfileImg.setForeground(new Color(255, 255, 255));
         ProfileImg.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        ProfileImg.setText("User's name");
+        ProfileImg.setText(user.getUserName());
         ProfileImg.setHorizontalTextPosition(SwingConstants.CENTER);
         ProfileImg.setVerticalTextPosition(SwingConstants.BOTTOM);
-        ImageIcon imageIcon = new ImageIcon(HomeMenu.class.getResource("/Icon/Profile/NguyenMinhQuan_222631132.png"));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/Icon/Profile/" + profileImage));
+
         Image image = imageIcon.getImage();
         Image newimg = image.getScaledInstance((int)(panel_AppLogo.getHeight() * 0.6), (int)(panel_AppLogo.getHeight() * 0.6),  java.awt.Image.SCALE_SMOOTH);
         imageIcon = new CircularImageIcon(newimg);
@@ -329,36 +312,5 @@ public class HomeMenu extends JFrame implements Paths {
         panel_AppLogo.add(ProfileImg);
         panel_AppLogo.revalidate();
         panel_AppLogo.repaint();
-
-
-        //event handler for table
-        TableActionEvent event = new TableActionEvent() {
-
-            @Override
-            public void onEdit(int row) {
-                JOptionPane.showInputDialog("Edit student: " , JOptionPane.INPUT_VALUE_PROPERTY);
-                //TODO add db
-            }
-
-            @Override
-            public void onDelete(int row) {
-                int option = JOptionPane.showOptionDialog(null, "Do you want to delete this student?", "Delete Student", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-                if (option == JOptionPane.YES_NO_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Delete successfull", null, JOptionPane.OK_OPTION);
-                    if(table.isEditing()) {
-                        table.getCellEditor().stopCellEditing();
-                    }
-                    DefaultTableModel model = (DefaultTableModel)table.getModel();
-                    model.removeRow(row);
-                    //TODO: xoa khoi csdl
-                }
-            }
-        };
-        table.getColumnModel().getColumn(0).setCellRenderer(new TableProfileRender());
-//		table.getColumnModel().getColumn(0).setCellEditor(new TableProfileImageEditor(null));
-
-        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
-        panel_DataTable.add(new JScrollPane(table), BorderLayout.CENTER);
     }
 }

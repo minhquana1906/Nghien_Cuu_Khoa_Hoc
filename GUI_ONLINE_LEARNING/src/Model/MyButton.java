@@ -1,4 +1,6 @@
-package MyComponent;
+package Model;
+
+import Controller.MyButtonController;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -12,44 +14,12 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JButton;
 
 public class MyButton extends JButton {
-    private int radius = 40;
+    private int radius;
     private static final float HOVER_ALPHA = 0.6f; // Độ trong suốt khi hover
     private static final float NORMAL_ALPHA = 1.0f; // Độ trong suốt khi không hover
-    private boolean hovering = false;
+    private boolean hovering;
 
-    public MyButton() {
-        setContentAreaFilled(false);
-        setBorder(null);
-        setOpaque(false);
-        if(!isEnabled()) {
-            setForeground(new Color(250,250,250));
-        }
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if(!isEnabled()) {
-                    return;
-                }
-                hovering = true;
-                repaint(); // Khi di chuột vào, vẽ lại nút để áp dụng hiệu ứng làm mờ
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                hovering = false;
-                repaint(); // Khi di chuột ra, vẽ lại nút để áp dụng hiệu ứng làm mờ
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setBackground(new Color(244,244,244));
-                repaint();
-                super.mousePressed(e);
-            }
-        });
-    }
-
-
+    private MyButtonController myButtonController;
 
     public int getRadius() {
         return radius;
@@ -60,7 +30,30 @@ public class MyButton extends JButton {
         repaint();
     }
 
+    public boolean isHovering() {
+        return hovering;
+    }
 
+    public void setHovering(boolean hovering) {
+        this.hovering = hovering;
+    }
+
+    public MyButton() {
+        init();
+
+        myButtonController = new MyButtonController(this);
+        this.addMouseListener(myButtonController);
+    }
+
+    private void init(){
+        radius = 40;
+        hovering = false;
+
+        setFocusPainted(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setOpaque(false);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -1,7 +1,7 @@
 package View;
 
 import Controller.AppController;
-import MyComponent.MyButton;
+import Model.MyButton;
 import MyInterface.AppInterface;
 import MyInterface.Paths;
 import SoundProcessing.MicrophoneListener;
@@ -199,10 +199,6 @@ public class App extends JFrame implements AppInterface, Paths {
         panel_UsersDisplay.setBackground(new Color(32, 33, 37));
         panel_UsersDisplay.setLayout(cardLayout);
         contentPane.add(panel_UsersDisplay, BorderLayout.CENTER);
-
-//        panelHeader = new JPanel();
-//        panelHeader.setBackground(new Color(32, 33, 37));
-//        contentPane.add(panelHeader, BorderLayout.NORTH);
 
         PanelChatBox = new JPanel();
         PanelChatBox.setBackground(new Color(32, 33, 37));

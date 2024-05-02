@@ -1,4 +1,4 @@
-package MyComponent;
+package DataTable;
 
 import java.awt.*;
 import javax.swing.*;

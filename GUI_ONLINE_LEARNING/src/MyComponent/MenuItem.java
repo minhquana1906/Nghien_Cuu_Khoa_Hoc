@@ -17,7 +17,7 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
     private Color pressColor;
     private Color hoverColor;
     private Color borderColor;
-    private int radius = 40;
+    private int radius;
     private boolean isSelected ;
     private static MenuItem selectedButton = null;
     private Color mainColor;
@@ -94,7 +94,7 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
         setFocusPainted(false);
 
         isSelected = false;
-//        selectedButton = null;
+        selectedButton = null;
         radius = 40;
         color = Color.white;
         mainColor = new Color(128, 128, 255);
