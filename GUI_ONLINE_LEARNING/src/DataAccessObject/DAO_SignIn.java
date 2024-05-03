@@ -2,8 +2,8 @@ package DataAccessObject;
 
 import Model.Student;
 import database.Database;
+import org.mindrot.bcrypt.BCrypt;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,18 +45,22 @@ public class DAO_SignIn implements DAOInterface<Student>{
         try{
             con = Database.mycon();
             st = con.createStatement();
-            String query = "SELECT * FROM studentList WHERE username = '" + obj.getUserName() + "' AND id = " + obj.getId() + " AND password = '" + obj.getPassword() + "' " ;
 
-//            System.out.println("Recent query: "+query);
+            String query = "SELECT * FROM studentList WHERE username = '" + obj.getUserName() + "' AND id = " + obj.getId();
+
+            System.out.println("Recent query: "+query);
             res = st.executeQuery(query);
             while(res.next()){
                 int id = res.getInt("id");
                 String username = res.getString("username");
-                String password = res.getString("password");
+                String hashedPassword = res.getString("password");
                 String imagePath = res.getString("imagepath");
                 String className = res.getString("classname");
 
-                model = new Student(id, username, className, imagePath, password);
+                // Check if the plaintext password matches the hashed password
+                if (BCrypt.checkpw(obj.getPassword(), hashedPassword)) {
+                    model = new Student(id, username, className, imagePath, hashedPassword);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,44 +84,6 @@ public class DAO_SignIn implements DAOInterface<Student>{
 
     @Override
     public ArrayList selectByCondition(String condition) {
-        ArrayList<Student> lst = null;
-        Student model = null;
-        Connection con = null;
-        Statement st = null;
-        ResultSet res = null;
-        try{
-            con = Database.mycon();
-            st = con.createStatement();
-            String query = "SELECT * FROM studentList WHERE username = ? AND id = ? AND password = ?";
-
-            res = st.executeQuery(query);
-            while(res.next()){
-                int id = Integer.parseInt(res.getString("id"));
-                String username = res.getString("username");
-                String password = res.getString("password");
-                String className = res.getString("classname");
-                String imagePath = res.getString("imagepath");
-
-                model = new Student(id, username, className, imagePath, password);
-                lst.add(model);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try{
-                if(res != null){
-                    res.close();
-                }
-                if(st != null){
-                    st.close();
-                }
-                if (con != null){
-                    con.close();
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
         return null;
     }
 }

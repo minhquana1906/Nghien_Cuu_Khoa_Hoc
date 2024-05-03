@@ -30,7 +30,12 @@ public class StudentTableModel {
     }
 
     private void init(){
-        table = new JTable();
+        table = new JTable(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0 && column != 1 && column != 2 && column != 3;
+            }
+        };
         table.setRowSelectionAllowed(false);
         table.setAutoscrolls(false);
         table.setFocusable(false);
@@ -55,8 +60,6 @@ public class StudentTableModel {
             data[i][4] = null;
         }
 
-
-
         table.setModel(new DefaultTableModel(
                 data,
                 new String[] {
@@ -64,12 +67,11 @@ public class StudentTableModel {
                 }
         ));
         table.getColumnModel().getColumn(0).setCellRenderer(new TableProfileRender());
-//		table.getColumnModel().getColumn(0).setCellEditor(new TableProfileImageEditor(null));
+//		table.getColumnModel().getColumn(0).setCellEditor(new );
 
         table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(controller.getEvent()));
     }
-
 
     public JTable getTable() {
         return table;

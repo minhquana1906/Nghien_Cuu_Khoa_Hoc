@@ -3,6 +3,7 @@ package DataAccessObject;
 import Model.SignUpModel;
 import com.sun.source.tree.StatementTree;
 import database.Database;
+import org.mindrot.bcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,8 +22,12 @@ public class DAO_SignUp implements DAOInterface<SignUpModel>{
         try{
             con = Database.mycon();
             st = con.createStatement();
+
+            String hashed = BCrypt.hashpw(obj.getPassword(), BCrypt.gensalt(12));
+
+
             String query = "INSERT INTO studentList (id, username, classname, password) VALUES " +
-                    "("+ obj.getId() + ", '" + obj.getUsername() + "', '" + obj.getClassName() + "', '" + obj.getPassword() + "')";
+                    "("+ obj.getId() + ", '" + obj.getUsername() + "', '" + obj.getClassName() + "', '" + hashed + "')";
 
             changes = st.executeUpdate(query);
             System.out.println("Recent query: "+query);
@@ -72,6 +77,7 @@ public class DAO_SignUp implements DAOInterface<SignUpModel>{
                 String username = res.getString("username");
                 String className = res.getString("className");
                 String password = res.getString("password");
+
                 model = new SignUpModel(username, id, className, password, password);
             }
         }catch (SQLException e) {
