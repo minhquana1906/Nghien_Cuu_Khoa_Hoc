@@ -26,17 +26,8 @@ public class HomeController implements ActionListener {
 
         dao = new DAO_HomeMenu();
         user = UserSession.getInstance(null).getUser();
-
-//        userSignedIn();
     }
 
-    public void userSignedIn() {
-        System.out.println("User ID: " + user.getId());
-        System.out.println("Username: " + user.getUserName());
-        System.out.println("Image Path: " + user.getImagePath());
-        System.out.println("Class Name: " + user.getClassName());
-        // Note: It's not recommended to print the password for security reasons
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -52,15 +43,15 @@ public class HomeController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Starting roll call", "Roll call", JOptionPane.INFORMATION_MESSAGE);
             startRollCallThread();
         }
-        else if(source == home.getBtnCourses()){
-            JOptionPane.showMessageDialog(null, "This feature is under development", "Courses", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else if(source == home.getBtnProfile()){
-            JOptionPane.showMessageDialog(null, "This feature is under development", "Profile", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else if(source == home.getBtnSetting()){
-            JOptionPane.showMessageDialog(null, "This feature is under development", "Setting", JOptionPane.INFORMATION_MESSAGE);
-        }
+//        else if(source == home.getBtnCourses()){
+//            JOptionPane.showMessageDialog(null, "This feature is under development", "Courses", JOptionPane.INFORMATION_MESSAGE);
+//        }
+//        else if(source == home.getBtnProfile()){
+//            JOptionPane.showMessageDialog(null, "This feature is under development", "Profile", JOptionPane.INFORMATION_MESSAGE);
+//        }
+//        else if(source == home.getBtnSetting()){
+//            JOptionPane.showMessageDialog(null, "This feature is under development", "Setting", JOptionPane.INFORMATION_MESSAGE);
+//        }
         else if(source == home.getBtnLogout()){
             int choice = JOptionPane.showConfirmDialog(null, "Do you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){

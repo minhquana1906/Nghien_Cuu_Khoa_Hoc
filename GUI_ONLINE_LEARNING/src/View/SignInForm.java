@@ -135,7 +135,6 @@ public class SignInForm extends JFrame implements Paths {
         contentPane.add(panel_Main);
         panel_Main.setLayout(new BorderLayout(0, 0));
 
-
         panel_Main_Header = new JPanel();
         panel_Main_Header.setBackground(new Color(255, 255, 255));
         panel_Main_Header.setPreferredSize(new Dimension((int)(FRAME_SIZE.getWidth()), (int)(FRAME_SIZE.getHeight() * 0.2)));
@@ -275,7 +274,6 @@ public class SignInForm extends JFrame implements Paths {
         panel_ButtonSignUp = new JPanel();
         panel_ButtonSignUp.setBackground(new Color(255, 255, 255));
         FlowLayout flowLayout = (FlowLayout) panel_ButtonSignUp.getLayout();
-//        flowLayout.setVgap(15);
         panel_MainFooter.add(panel_ButtonSignUp, BorderLayout.NORTH);
 
         btnSignIn = new JButton("Sign In");
@@ -301,37 +299,5 @@ public class SignInForm extends JFrame implements Paths {
         lbl_LoginHere.setFont(new Font("Tahoma", Font.BOLD, 16));
         lbl_LoginHere.setAlignmentX(1.0f);
         panel_SignUpOption.add(lbl_LoginHere);
-    }
-
-    private boolean checkPassword(String username, String id, String password) throws SQLException {
-        Connection con = database.Database.mycon();
-        ResultSet res = null;
-
-        if(con != null) {
-            try {
-                String query = "Select password from studentlist where username = ? and id = ?";
-                PreparedStatement ps = con.prepareStatement(query);
-
-                ps.setString(1, username);
-                ps.setString(2, id);
-
-                res = ps.executeQuery();
-                if(res.next()) {
-                    String pass = res.getString("password");
-                    if(pass.equals(password)) {
-                        return true;
-                    }
-                }
-
-            } finally {
-                if(res != null){
-                    res.close();
-                }
-                if(con != null){
-                    con.close();
-                }
-            }
-        }
-        return false;
     }
 }

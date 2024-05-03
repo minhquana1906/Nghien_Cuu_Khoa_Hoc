@@ -40,7 +40,7 @@ public class TableController {
             public void onDelete(int row) {
                 int option = JOptionPane.showOptionDialog(null, "Do you want to delete this student?", "Delete Student", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (option == JOptionPane.YES_NO_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Delete successful", null, JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null, "Delete successful", null, JOptionPane.INFORMATION_MESSAGE);
                     if(tableModel.getTable().isEditing()) {
                         tableModel.getTable().getCellEditor().stopCellEditing();
                     }

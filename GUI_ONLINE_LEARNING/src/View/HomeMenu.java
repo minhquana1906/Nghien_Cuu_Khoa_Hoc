@@ -9,20 +9,16 @@ import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import Controller.HomeController;
 import Controller.TableController;
 import DataTable.*;
 import Model.Student;
 import Model.StudentTableModel;
-import MyComponent.MenuItem;
+import Model.MenuItem;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import Controller.TableActionEvent;
 
 import Model.MyButton;
 import MyInterface.Paths;

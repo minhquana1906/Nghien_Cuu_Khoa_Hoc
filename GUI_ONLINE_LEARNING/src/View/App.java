@@ -1,7 +1,10 @@
 package View;
 
 import Controller.AppController;
+import Controller.HomeController;
 import Model.MyButton;
+import Model.Student;
+import Model.UserSession;
 import MyInterface.AppInterface;
 import MyInterface.Paths;
 import SoundProcessing.MicrophoneListener;
@@ -32,7 +35,6 @@ public class App extends JFrame implements AppInterface, Paths {
     private JPanel panelChatRightGap;
     private JPanel panelChatLeftGap;
     private JPanel panelChatTopGap;
-    private JPanel panelLeftSide;
     private JPanel smallLayout;
     private JPanel mediumLayout;
     private JPanel largeLayout;
@@ -57,6 +59,7 @@ public class App extends JFrame implements AppInterface, Paths {
 
     //dang ky su kien
     AppController appController;
+    private Student user;
 
     //getters & setters
 
@@ -188,11 +191,11 @@ public class App extends JFrame implements AppInterface, Paths {
         btnChat.addActionListener(appController);
         btnSendMessage.addActionListener(appController);
         txtrSendMessage.addFocusListener(appController);
-
-
     }
 
     private void initComponents(){
+        user = UserSession.getInstance(null).getUser();
+
         cardLayout = new CardLayout();
 
         panel_UsersDisplay = new JPanel();
@@ -245,7 +248,7 @@ public class App extends JFrame implements AppInterface, Paths {
 
         smallLayout = new JPanel(new GridLayout(1, 1));
         label_sml = new JLabel();
-        label_sml.setIcon(new ImageIcon(getClass().getResource(APP_USER_REPLACEMENT_ICON)));
+        label_sml.setIcon(new ImageIcon(getClass().getResource("/Icon/Profile/" + user.getImagePath())));
         label_sml.setHorizontalAlignment(SwingConstants.CENTER);
         smallLayout.add(label_sml);
 

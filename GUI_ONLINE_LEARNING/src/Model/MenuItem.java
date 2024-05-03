@@ -1,12 +1,10 @@
-package MyComponent;
+package Model;
 
+import Controller.MenuItemController;
 import MyInterface.MenuItemInterface;
 import MyInterface.Paths;
-import View.HomeMenu;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
@@ -19,8 +17,9 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
     private Color borderColor;
     private int radius;
     private boolean isSelected ;
-    private static MenuItem selectedButton = null;
+    private MenuItem selectedButton;
     private Color mainColor;
+    private MenuItemController controller;
 
     public boolean isHovering() {
         return hovering;
@@ -66,12 +65,12 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
         this.isSelected = isSelected;
     }
 
-    public static MenuItem getSelectedButton() {
+    public MenuItem getSelectedButton() {
         return selectedButton;
     }
 
-    public static void setSelectedButton(MenuItem selectedButton) {
-        MenuItem.selectedButton = selectedButton;
+    public void setSelectedButton(MenuItem selectedButton) {
+        this.selectedButton = selectedButton;
     }
 
     public Color getMainColor() {
@@ -86,6 +85,9 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
         super(text);
 
         initComponents();
+
+        controller = new MenuItemController(this);
+        this.addMouseListener(controller);
     }
 
     private void initComponents(){
@@ -104,96 +106,13 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
         setColor(color);
 
         if(getText().equals(HOME)){
-            isSelected = true;
-            selectedButton = this;
+            ButtonSession.getInstance().setSelectedButton(this);
+            selectedButton = ButtonSession.getInstance().getSelectedButton();
+            setSelected(true);
             this.setBackground(color);
             this.setForeground(mainColor);
             this.setColoredIcon(homeIconPath, mainColor);
         }
-
-        addMouseListener(new MouseListener() {
-
-
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-                // If there is a previously selected button, deselect it
-                if (selectedButton != null) {
-                    selectedButton.isSelected = false;
-                    selectedButton.setBackground(selectedButton.color);
-                    selectedButton.setForeground(Color.white);
-
-                    //only change color of icon != log out button
-                    if(selectedButton.getText().equals(HOME)){
-                        selectedButton.setColoredIcon(homeIconPath, Color.white);
-                    }
-                    else if(selectedButton.getText().equals(COURSES)){
-                        selectedButton.setColoredIcon(coursesIconPath, Color.white);
-                    }
-                    else if(selectedButton.getText().equals(PROFILE)){
-                        selectedButton.setColoredIcon(profileIconPath, Color.white);
-                    }
-                    else if(selectedButton.getText().equals(SETTING)){
-                        selectedButton.setColoredIcon(settingIconPath, Color.white);
-                    }
-                    else if(selectedButton.getText().equals(LOGOUT)){
-                        setIcon(new ImageIcon(getClass().getResource(logoutIconPath)));
-                    }
-                }
-
-
-                // Select the current button
-                isSelected = true;
-                setBackground(pressColor);
-                setForeground(mainColor);
-
-                if (getText().equals(HOME)) {
-                    setColoredIcon(HomeMenu.homeIconPath, mainColor);
-                } else if (getText().equals(COURSES)) {
-                    setColoredIcon(coursesIconPath, mainColor);
-                } else if (getText().equals(PROFILE)) {
-                    setColoredIcon(profileIconPath, mainColor);
-                } else if (getText().equals(SETTING)) {
-                    setColoredIcon(settingIconPath, mainColor);
-                }else if(getText().equals(LOGOUT)){
-                    setIcon(new ImageIcon(getClass().getResource(logoutIconPath)));
-                }
-
-                // Update the selectedButton to the current button
-                selectedButton = MenuItem.this;
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // TODO Auto-generated method stub
-                setBackground(color);
-                hovering = false;
-            }
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // TODO Auto-generated method stub
-                setBackground(hoverColor);
-                hovering = true;
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // TODO Auto-generated method stub
-//                setBackground(pressColor);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                // TODO Auto-generated method stub
-                if(hovering) {
-                    setBackground(hoverColor);
-
-                }else {
-                    setBackground(color);
-                }
-            }
-        });
     }
 
     @Override
@@ -205,18 +124,15 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
         //set default
         g2d.setColor(borderColor);
         g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-//        g2d.setColor(getBackground()); //chi paint border
 
-        //Pait border
+        //Paint border
         if(isSelected) {
             g2d.setColor(borderColor);
             g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
             g2d.setColor(getBackground()); //chi paint border
-
         }
 
         g2d.fillRoundRect(2, 2, getWidth() - 4, getHeight() - 4, radius, radius);
-
         super.paintComponent(g);
     }
 
@@ -243,7 +159,6 @@ public class MenuItem extends JButton implements Paths, MenuItemInterface {
                 }
             }
         }
-
         return new ImageIcon(bufferedImage);
     }
 }
