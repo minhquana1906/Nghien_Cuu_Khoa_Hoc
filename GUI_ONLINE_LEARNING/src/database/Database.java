@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 public class Database {
     private static String driver = "com.mysql.cj.jdbc.Driver";
-    private static String url = "jdbc:mysql://localhost:3306/onlinelearningdb";
-    private static String username = "root";
-    private static String password = "minhquan2004";
+    private static String url = "jdbc:mysql://192.168.1.103:3306/onlinelearningdb   ";
+    private static String username = "admin";
+    private static String password = "admin";
     public static Connection mycon() {
         Connection con = null;
         try {
