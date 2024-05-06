@@ -1,7 +1,6 @@
 package Controller;
 
 import DataAccessObject.DAO_SignIn;
-import Model.SignInModel;
 import Model.Student;
 import Model.UserSession;
 import View.HomeMenu;
@@ -9,6 +8,7 @@ import View.SignInForm;
 import View.SignUpForm;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -86,11 +86,6 @@ public class SignInController implements ActionListener, MouseListener {
                 signUpForm.setVisible(true);
                 signIn.dispose();
             }
-//            if(label == signIn.getLbl_LoginHere()){
-//                SignUpForm signUpForm = new SignUpForm();
-//                signUpForm.setVisible(true);
-//                signIn.dispose();
-//            }
         }
     }
 
@@ -106,11 +101,24 @@ public class SignInController implements ActionListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        Object source = e.getSource();
+        if(source instanceof JLabel){
+            JLabel label = (JLabel) source;
+            if(label == signIn.getLbl_LoginHere()){
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        }
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        Object source = e.getSource();
+        if(source instanceof JLabel){
+            JLabel label = (JLabel) source;
+            if(label == signIn.getLbl_LoginHere()){
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+        }
     }
 }

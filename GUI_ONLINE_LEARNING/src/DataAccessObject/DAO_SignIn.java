@@ -1,6 +1,7 @@
 package DataAccessObject;
 
 import Model.Student;
+import MyInterface.DAOInterface;
 import database.Database;
 import org.mindrot.bcrypt.BCrypt;
 
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DAO_SignIn implements DAOInterface<Student>{
+public class DAO_SignIn implements DAOInterface<Student> {
 
     public DAO_SignIn getInstance(){
         return new DAO_SignIn();

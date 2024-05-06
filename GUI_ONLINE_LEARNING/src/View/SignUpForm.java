@@ -89,6 +89,16 @@ public class SignUpForm extends JFrame implements Paths {
         return passwordField_PasswordConfirm;
     }
 
+    public JLabel getLbl_LoginHere() {
+        return lbl_LoginHere;
+    }
+
+    public JLabel getLbl_HaveAccount() {
+        return lbl_HaveAccount;
+    }
+    public JButton getBtnSignUp() {
+        return btnSignup;
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -105,7 +115,7 @@ public class SignUpForm extends JFrame implements Paths {
         setIconImage(Toolkit.getDefaultToolkit().getImage(SignUpForm.class.getResource(SIGN_UP_ICON)));
         setTitle("Sign Up");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 530, 680);
+        setSize(530,680);
         setLocationRelativeTo(null);
         setResizable(false);
         //get size of frame

@@ -1,11 +1,9 @@
 package Controller;
 
 import DataAccessObject.DAO_StudentTable;
-import DataTable.TableActionCellEditor;
-import DataTable.TableActionCellRender;
-import DataTable.TableProfileRender;
 import Model.Student;
 import Model.StudentTableModel;
+import MyInterface.TableActionEvent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +13,11 @@ public class TableController {
     private StudentTableModel tableModel;
     private DAO_StudentTable dao;
     private TableActionEvent event;
+    private List<Student> students;
+
+    public List<Student> getStudents() {
+        return students;
+    }
 
     public TableActionEvent getEvent() {
         return event;
@@ -26,7 +29,7 @@ public class TableController {
 
     public TableController(){
         dao = new DAO_StudentTable();
-        List<Student> students = dao.selectAll();
+        students = dao.selectAll();
         this.tableModel = new StudentTableModel(students, this);
 
         this.event = new TableActionEvent() {

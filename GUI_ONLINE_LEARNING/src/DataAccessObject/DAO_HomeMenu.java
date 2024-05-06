@@ -1,6 +1,7 @@
 package DataAccessObject;
 
 import Model.Student;
+import MyInterface.DAOInterface;
 import database.Database;
 
 import java.sql.Connection;

@@ -113,7 +113,7 @@ public class HomeMenu extends JFrame implements Paths {
         setIconImage(Toolkit.getDefaultToolkit().getImage(HomeMenu.class.getResource(HOME_ICON)));
         setTitle("Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1080, 680);
+        setSize(1366, 768);
         setLocationRelativeTo(null);
 
         contentPane = new JPanel();

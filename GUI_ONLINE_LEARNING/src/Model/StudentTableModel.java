@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.TableActionEvent;
 import Controller.TableController;
 import DataTable.TableActionCellEditor;
 import DataTable.TableActionCellRender;
@@ -8,8 +7,8 @@ import DataTable.TableProfileRender;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentTableModel {
@@ -21,12 +20,16 @@ public class StudentTableModel {
     private TableController controller;
     private List<Student> students;
     private String imgPath;
+    private Object[][] data;
+
+    public Object[][] getData() {
+        return data;
+    }
 
     public StudentTableModel(List<Student> students, TableController controller){
         this.students = students;
         this.controller = controller;
         init();
-
     }
 
     private void init(){
@@ -47,7 +50,7 @@ public class StudentTableModel {
         table.setRowHeight(50);
         table.setBorder(null);
 
-        Object[][] data = new Object[students.size()][5];
+        data = new Object[students.size()][5];
         for (int i = 0; i < students.size(); i++) {
             imgPath = students.get(i).getImagePath();
             if(imgPath == null || imgPath.isEmpty()){
@@ -67,7 +70,6 @@ public class StudentTableModel {
                 }
         ));
         table.getColumnModel().getColumn(0).setCellRenderer(new TableProfileRender());
-//		table.getColumnModel().getColumn(0).setCellEditor(new );
 
         table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(controller.getEvent()));
@@ -75,5 +77,18 @@ public class StudentTableModel {
 
     public JTable getTable() {
         return table;
+    }
+    public List<Student> getStudents(){
+        List<Student> students = new ArrayList<>();
+        for(Object[] row : data){
+            ImageIcon icon = (ImageIcon) row[0];
+            String userName = (String) row[1];
+            int id = (int) row[2];
+            String className = (String) row[3];
+
+            String path = icon.getDescription();
+            students.add(new Student(id, userName, className, path, null));
+        }
+        return students;
     }
 }

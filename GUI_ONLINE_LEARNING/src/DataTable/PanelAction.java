@@ -6,7 +6,7 @@ import Model.MyButton;
 
 import java.awt.Dimension;
 
-import Controller.TableActionEvent;
+import MyInterface.TableActionEvent;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;

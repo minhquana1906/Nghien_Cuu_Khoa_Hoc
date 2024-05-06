@@ -1,14 +1,14 @@
 package DataAccessObject;
 
 import Model.SignUpModel;
-import com.sun.source.tree.StatementTree;
+import MyInterface.DAOInterface;
 import database.Database;
 import org.mindrot.bcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DAO_SignUp implements DAOInterface<SignUpModel>{
+public class DAO_SignUp implements DAOInterface<SignUpModel> {
 
     public DAO_SignUp getInstance(){
         return new DAO_SignUp();

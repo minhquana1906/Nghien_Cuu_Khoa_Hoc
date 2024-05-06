@@ -1,4 +1,4 @@
-package DataAccessObject;
+package MyInterface;
 
 import java.util.ArrayList;
 

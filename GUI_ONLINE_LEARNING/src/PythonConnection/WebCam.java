@@ -12,7 +12,8 @@ public class WebCam {
     }
     public void start() throws IOException {
         // Xây dựng đường dẫn đến thư mục chứa tập lệnh Python
-        String pythonScriptDirectory = "F:\\Nghien_Cuu_Khoa_Hoc\\Supervision-for-Online-Learning\\";
+        String currentWorkingDirectory = System.getProperty("user.dir");
+        String pythonScriptDirectory = currentWorkingDirectory + File.separator + "Supervision-for-Online-Learning" + File.separator;
 
         // Xây dựng đường dẫn đến tập lệnh Python
         String pythonScriptPath = pythonScriptDirectory + "Face_Detection.py";

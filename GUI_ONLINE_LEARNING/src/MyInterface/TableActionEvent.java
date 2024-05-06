@@ -1,4 +1,4 @@
-package Controller;
+package MyInterface;
 
 public interface TableActionEvent {
     public void onEdit(int row);

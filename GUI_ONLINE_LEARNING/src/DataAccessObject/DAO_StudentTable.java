@@ -1,9 +1,7 @@
 package DataAccessObject;
 
 import Model.Student;
-import Model.SignInModel;
-import Model.Student;
-import Model.StudentTableModel;
+import MyInterface.DAOInterface;
 import database.Database;
 
 import java.sql.Connection;
@@ -12,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DAO_StudentTable implements DAOInterface<Student>{
+public class DAO_StudentTable implements DAOInterface<Student> {
 
     @Override
     public int insert(Student obj) {

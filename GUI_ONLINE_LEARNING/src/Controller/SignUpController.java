@@ -6,6 +6,7 @@ import View.SignInForm;
 import View.SignUpForm;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -77,9 +78,12 @@ public class SignUpController implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        signUp.dispose();
-        SignInForm signIn = new SignInForm();
-        signIn.setVisible(true);
+        Object src = e.getSource();
+        if(src instanceof JLabel){
+            signUp.dispose();
+            SignInForm signIn = new SignInForm();
+            signIn.setVisible(true);
+        }
     }
 
     @Override
@@ -94,12 +98,24 @@ public class SignUpController implements ActionListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        return;
+        Object src = e.getSource();
+        if(src instanceof JLabel){
+            JLabel label = (JLabel) src;
+            if(label == signUp.getLbl_LoginHere()){
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        return;
+        Object src = e.getSource();
+        if(src instanceof JLabel){
+            JLabel label = (JLabel) src;
+            if(label == signUp.getLbl_LoginHere()){
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+        }
     }
 
     //validate password

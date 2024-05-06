@@ -108,7 +108,7 @@ public class SignInForm extends JFrame implements Paths {
         setIconImage(Toolkit.getDefaultToolkit().getImage(SignInForm.class.getResource(SIGN_IN_ICON)));
         setTitle("Sign In ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 500, 585);
+        setSize(500,585);
         setLocationRelativeTo(null);
         setResizable(false);
         //get size of frame
@@ -273,7 +273,6 @@ public class SignInForm extends JFrame implements Paths {
 
         panel_ButtonSignUp = new JPanel();
         panel_ButtonSignUp.setBackground(new Color(255, 255, 255));
-        FlowLayout flowLayout = (FlowLayout) panel_ButtonSignUp.getLayout();
         panel_MainFooter.add(panel_ButtonSignUp, BorderLayout.NORTH);
 
         btnSignIn = new JButton("Sign In");

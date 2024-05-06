@@ -1,7 +1,7 @@
 package View;
 
 import Controller.AppController;
-import Controller.HomeController;
+import Controller.TableController;
 import Model.MyButton;
 import Model.Student;
 import Model.UserSession;
@@ -11,6 +11,7 @@ import SoundProcessing.MicrophoneListener;
 
 
 import java.awt.*;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -36,8 +37,7 @@ public class App extends JFrame implements AppInterface, Paths {
     private JPanel panelChatLeftGap;
     private JPanel panelChatTopGap;
     private JPanel smallLayout;
-    private JPanel mediumLayout;
-    private JPanel largeLayout;
+    private JPanel fullSizeLayout;
     private JLabel label_sml;
     private JPanel panel_ControlMenu;
     private JPanel panel_ControlMenu_Right;
@@ -56,6 +56,7 @@ public class App extends JFrame implements AppInterface, Paths {
     private JTextArea txtrSendMessage;
     private JPanel panel_UsersDisplay;
     private CardLayout cardLayout;
+    private TableController tableController;
 
     //dang ky su kien
     AppController appController;
@@ -165,8 +166,9 @@ public class App extends JFrame implements AppInterface, Paths {
         setTitle(TITLE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(APP_LOGO)));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1024, 640);
+        setSize(1380,790);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(59, 64, 65));
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
@@ -195,6 +197,9 @@ public class App extends JFrame implements AppInterface, Paths {
 
     private void initComponents(){
         user = UserSession.getInstance(null).getUser();
+
+        tableController = new TableController();
+        List<Student> students =  tableController.getStudents();
 
         cardLayout = new CardLayout();
 
@@ -248,29 +253,31 @@ public class App extends JFrame implements AppInterface, Paths {
 
         smallLayout = new JPanel(new GridLayout(1, 1));
         label_sml = new JLabel();
+        label_sml.setOpaque(true);
+        label_sml.setBackground(new Color(59, 64, 65));
         label_sml.setIcon(new ImageIcon(getClass().getResource("/Icon/Profile/" + user.getImagePath())));
         label_sml.setHorizontalAlignment(SwingConstants.CENTER);
         smallLayout.add(label_sml);
 
-        mediumLayout = new JPanel(new GridLayout(2, 2));
-        for (int i = 0; i < 4; i++) {
-            JLabel label = new JLabel();
-            label.setIcon(new ImageIcon(getClass().getResource(APP_USER_REPLACEMENT_ICON)));
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            mediumLayout.add(label);
-        }
 
-        largeLayout = new JPanel(new GridLayout(3, 3));
-        for (int i = 0; i < 9; i++) {
-            JLabel label = new JLabel();
-            label.setIcon(new ImageIcon(getClass().getResource(APP_USER_REPLACEMENT_ICON)));
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            largeLayout.add(label);
+        fullSizeLayout = new JPanel(new GridLayout(3, 3));
+        if(students.size() > 4){
+            for (int i = 0; i < students.size(); i++) {
+                JLabel label = new JLabel();
+                label.setBackground(new Color(59, 64, 65));
+                label.setOpaque(true);
+                String imagePath = students.get(i).getImagePath();
+                if (imagePath == null || imagePath.isEmpty()) {
+                    imagePath = "defaultUser.png";
+                }
+                label.setIcon(new ImageIcon(getClass().getResource("/Icon/Profile/" + imagePath)));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                fullSizeLayout.add(label);
+            }
         }
 
         panel_UsersDisplay.add(smallLayout, SMALL_LAYOUT);
-        panel_UsersDisplay.add(mediumLayout, MEDIUM_LAYOUT);
-        panel_UsersDisplay.add(largeLayout, LARGE_LAYOUT);
+        panel_UsersDisplay.add(fullSizeLayout, LARGE_LAYOUT);
 
         panel_ControlMenu = new JPanel();
         panel_ControlMenu.setBackground(new Color(32, 33, 37));
