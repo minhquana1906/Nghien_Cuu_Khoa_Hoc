@@ -16,7 +16,7 @@
     //        String pythonScriptDirectory = "../Supervision-for-Online-Learning/";
 
             // Xây dựng đường dẫn đến tập lệnh Python
-            String pythonScriptPath = pythonScriptDirectory + "Face_attendance_have_anti_spoofing.py";
+            String pythonScriptPath = pythonScriptDirectory + "Face_attendance.py";
 
             // Tạo ProcessBuilder để chạy tập lệnh Python
             ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
